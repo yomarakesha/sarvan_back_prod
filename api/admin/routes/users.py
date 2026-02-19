@@ -3,11 +3,12 @@ from extensions import db
 from models.user import User
 from .. import admin_bp
 from .auth import admin_required
+from werkzeug.security import generate_password_hash, check_password_hash
 
 @admin_bp.route('/users', methods=['GET'])
 @admin_required
 def get_users():
-    # Возможность фильтрации по роли: /users?role=курьер
+    #/users?role=courier
     role_param = request.args.get('role')
     query = User.query
     if role_param:
@@ -48,6 +49,13 @@ def update_user(user_id):
     user = User.query.get_or_404(user_id)
     data = request.get_json()
 
+    new_username = data.get('username')
+    if new_username and new_username != user.username:
+        exists = User.query.filter(User.username == new_username, User.id != user_id).first()
+        if exists:
+            return jsonify({"error": "Это имя пользователя уже занято"}), 400
+        user.username = new_username
+
     user.full_name = data.get('full_name', user.full_name)
     user.phone = data.get('phone', user.phone)
     user.role = data.get('role', user.role)
@@ -55,7 +63,12 @@ def update_user(user_id):
     if data.get('password'):
         user.set_password(data['password'])
 
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Ошибка при обновлении данных"}), 500
+
     return jsonify(user.to_dict()), 200
 
 
@@ -75,10 +88,3 @@ def unblock_user(user_id):
     user.is_active = True
     db.session.commit()
     return jsonify({"message": f"Пользователь {user.username} разблокирован", "user": user.to_dict()}), 200
-
-
-@admin_bp.route('/users/<int:user_id>', methods=['GET'])
-@admin_required
-def get_user_detail(user_id):
-    user = User.query.get_or_404(user_id)
-    return jsonify(user.to_dict()), 200
