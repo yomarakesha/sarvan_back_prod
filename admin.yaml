@@ -12,7 +12,7 @@ collection:
     meta:
       id: req_e01a936cdde542d884602629349752b9
       created: 1771477993670
-      modified: 1771478198908
+      modified: 1771558897802
       isPrivate: false
       description: ""
       sortKey: -1771477993670
@@ -331,7 +331,7 @@ collection:
     meta:
       id: req_243d17f306594240a7a72e14592b51de
       created: 1771481133344
-      modified: 1771485433180
+      modified: 1771560436316
       isPrivate: false
       description: |-
         Roles:
@@ -347,10 +347,10 @@ collection:
       text: |-
         {
         	"full_name": "Dovlet Saryyev",
-        	"phone": "+123456",
-        	"username": "dovlet3",
+        	"phone": "+99365688764",
+        	"username": "dovletsaryyev",
         	"password": "12345",
-        	"role" : "operator"
+        	"role" : "courier"
         }
     headers:
       - name: Content-Type
@@ -494,16 +494,445 @@ collection:
         send: true
         store: true
       rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/cities
+    name: City-add new
+    meta:
+      id: req_70d2dc0451cc4fe9901ede103f3f20a2
+      created: 1771558867876
+      modified: 1771559492337
+      isPrivate: false
+      description: ""
+      sortKey: -1771558867876
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Ashgabat"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/cities
+    name: City-get all
+    meta:
+      id: req_7366164a15c64744ab8e49c7652ee0d8
+      created: 1771558960323
+      modified: 1771558976758
+      isPrivate: false
+      description: ""
+      sortKey: -1771558960323
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/cities/1
+    name: City-update
+    meta:
+      id: req_ccc945540dc149639703dc22290b5e1d
+      created: 1771559010262
+      modified: 1771559053338
+      isPrivate: false
+      description: ""
+      sortKey: -1771559010262
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Arkadag"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/cities/1/block
+    name: City-block
+    meta:
+      id: req_11a7322425a546018bf8c2fdeea4aef6
+      created: 1771559149455
+      modified: 1771559179345
+      isPrivate: false
+      description: ""
+      sortKey: -1771559149455
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/cities/1/unblock
+    name: City-unblock
+    meta:
+      id: req_0879c572ecb746bc90532e20aa987b1a
+      created: 1771559184395
+      modified: 1771559208955
+      isPrivate: false
+      description: ""
+      sortKey: -1771559184395
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/districts
+    name: District-add new
+    meta:
+      id: req_cfc98dd217c6423f8eb93e232a547ee2
+      created: 1771559213918
+      modified: 1771560028924
+      isPrivate: false
+      description: ""
+      sortKey: -1771559213918
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Rayon1",
+        	"city_id": 1
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/districts
+    name: District-get all
+    meta:
+      id: req_8c94776009ef4af089381d10a7ba2739
+      created: 1771559501680
+      modified: 1771559540856
+      isPrivate: false
+      description: ""
+      sortKey: -1771559501680
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/districts/1/block
+    name: District-block
+    meta:
+      id: req_2ea14e916f4149d286103c6a87081821
+      created: 1771559643383
+      modified: 1771559683182
+      isPrivate: false
+      description: ""
+      sortKey: -1771559643383
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/districts/1/unblock
+    name: District-unblock
+    meta:
+      id: req_91aa48059669439b9e3587f9339c6c5f
+      created: 1771559685578
+      modified: 1771559834840
+      isPrivate: false
+      description: ""
+      sortKey: -1771559685578
+    method: PATCH
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/districts/1
+    name: District-update
+    meta:
+      id: req_b95ddd50aa2540c0aa2b65ba03aa41a2
+      created: 1771559837327
+      modified: 1771560040410
+      isPrivate: false
+      description: ""
+      sortKey: -1771559837327
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "Belli rayon",
+        	"city_id": 2
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/users/4/equipment
+    name: Courier-add or edit transport and device info
+    meta:
+      id: req_f1c211af171e4b9fb3d1a0be82058eb7
+      created: 1771560448597
+      modified: 1771560645655
+      isPrivate: false
+      description: ""
+      sortKey: -1771560448597
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"transport_number": "A06915AG",
+        	"device_info": "SM-9123NA"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/couriers/full-list
+    name: Courier-get all information with filters
+    meta:
+      id: req_e6d4be0c36644800b15e9728175c3af5
+      created: 1771561041842
+      modified: 1771562187801
+      isPrivate: false
+      description: ""
+      sortKey: -1771561041842
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/users/4/districts/attach
+    name: Courier-attach districts (all in one city)
+    meta:
+      id: req_bc232490bfb64315bdfa671a12fb25f1
+      created: 1771562165562
+      modified: 1771563219060
+      isPrivate: false
+      description: ""
+      sortKey: -1771562165562
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"city_id": 1, 
+        	"district_ids": "all"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/users/4/districts/2
+    name: Courier-de-attach district(by their number-by one)
+    meta:
+      id: req_2f147931e73b45799a005236e2b23b4d
+      created: 1771562745196
+      modified: 1771563463226
+      isPrivate: false
+      description: ""
+      sortKey: -1771562745196
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/users/4/districts/attach
+    name: Courier-attach districts(by their id-one or more)
+    meta:
+      id: req_57b362e08fcb40159a2c5dcb8354add0
+      created: 1771563105043
+      modified: 1771563434435
+      isPrivate: false
+      description: ""
+      sortKey: -1771563105043
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"city_id": 1, 
+        	"district_ids": [2,3]
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: ""
+    name: New Request
+    meta:
+      id: req_8fccd59a329b4204ad8c50b7529a3884
+      created: 1771563439332
+      modified: 1771563439332
+      isPrivate: false
+      description: ""
+      sortKey: -1771563439332
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
 cookieJar:
   name: Default Jar
   meta:
     id: jar_31d43ac8123beca7966ffd56ff9881a1c35513cf
     created: 1771477887846
-    modified: 1771478255808
+    modified: 1771558924703
   cookies:
-    - id: 1c1570bb-0195-4d9e-ad2b-ef21e4cd0505
+    - id: ff15f9d6-6ee7-4c57-867c-854e2f8bd930
       key: session
-      value: eyJhZG1pbl9pZCI6MX0.aZac7w.ql-0seX8T6yfmFJ8xCuJG9fnLHo
+      value: eyJhZG1pbl9pZCI6MX0.aZfYDA.a8bNOO5degnp8lJjzYrV3VsrmR8
       domain: 127.0.0.1
       path: /
       secure: false
