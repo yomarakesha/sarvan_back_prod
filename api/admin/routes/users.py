@@ -2,7 +2,7 @@ from flask import jsonify, request
 from extensions import db
 from models.user import User
 from .. import admin_bp
-from .auth import admin_required
+from utils.decorators import admin_required
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @admin_bp.route('/users', methods=['GET'])

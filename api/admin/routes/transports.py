@@ -2,7 +2,7 @@ from flask import jsonify, request
 from extensions import db
 from models.transport import Transport
 from .. import admin_bp
-from .auth import admin_required
+from utils.decorators import admin_required
 
 @admin_bp.route('/transports', methods=['GET', 'POST'])
 @admin_required

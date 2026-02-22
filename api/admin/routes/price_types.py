@@ -2,7 +2,7 @@ from flask import jsonify, request
 from extensions import db
 from models.price_type import PriceType
 from .. import admin_bp
-from .auth import admin_required
+from utils.decorators import admin_required
 
 
 @admin_bp.route('/price-types', methods=['GET', 'POST'])

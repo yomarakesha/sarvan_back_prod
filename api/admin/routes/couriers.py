@@ -5,7 +5,7 @@ from models.district import District
 from models.courier import CourierProfile
 from models.transport import Transport
 from .. import admin_bp
-from .auth import admin_required
+from utils.decorators import admin_required
 
 def get_or_create_courier_profile(user_id):
     profile = CourierProfile.query.get(user_id)

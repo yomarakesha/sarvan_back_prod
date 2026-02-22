@@ -2,7 +2,12 @@ from flask import jsonify, request
 from extensions import db
 from models.city import City
 from .. import admin_bp
-from .auth import admin_required
+from utils.decorators import admin_required
+from sqlalchemy import func
+from models.district import District
+from models.city import City
+from models.courier import courier_districts
+
 
 @admin_bp.route('/cities', methods=['GET'])
 @admin_required
@@ -59,3 +64,26 @@ def update_city(city_id):
     city.name = new_name
     db.session.commit()
     return jsonify({"message": "Город обновлен", "city": city.to_dict()}), 200
+
+@admin_bp.route('/cities/full-list', methods=['GET'])
+@admin_required
+def get_cities_full_list():
+    cities = City.query.all()
+    result = []
+
+    for city in cities:
+        districts_count = District.query.filter_by(city_id=city.id).count()
+        couriers_count = db.session.query(func.count(func.distinct(courier_districts.c.courier_id)))\
+            .join(District, District.id == courier_districts.c.district_id)\
+            .filter(District.city_id == city.id)\
+            .scalar()
+
+        result.append({
+            "id": city.id,
+            "name": city.name,
+            "is_active": city.is_active,
+            "districts_count": districts_count,
+            "couriers_count": couriers_count or 0
+        })
+
+    return jsonify(result), 200
