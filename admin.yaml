@@ -12,7 +12,7 @@ collection:
     meta:
       id: req_e01a936cdde542d884602629349752b9
       created: 1771477993670
-      modified: 1771737463044
+      modified: 1771841965971
       isPrivate: false
       description: ""
       sortKey: -1771477993670
@@ -21,7 +21,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-          "username": "dovletsaryyev",
+          "username": "admin",
           "password": "12345"
         }
     headers:
@@ -868,12 +868,12 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: http://127.0.0.1:5000/api/admin/users/4/districts/attach
+  - url: http://127.0.0.1:5000/api/admin/users/1/districts/attach
     name: Courier-attach districts(by their id-one or more)
     meta:
       id: req_57b362e08fcb40159a2c5dcb8354add0
       created: 1771563105043
-      modified: 1771563434435
+      modified: 1771844730970
       isPrivate: false
       description: ""
       sortKey: -1771563105043
@@ -883,7 +883,7 @@ collection:
       text: |-
         {
         	"city_id": 1, 
-        	"district_ids": [2,3]
+        	"district_ids": [1]
         }
     headers:
       - name: Content-Type
@@ -1055,7 +1055,7 @@ collection:
     meta:
       id: req_fe278a51ef614a9fbeae2410f376fe81
       created: 1771734676296
-      modified: 1771734776789
+      modified: 1771842514887
       isPrivate: false
       description: ""
       sortKey: -1771734676296
@@ -1064,7 +1064,7 @@ collection:
       mimeType: application/json
       text: |-
         {
-        	"phone": "12345"
+        	"phone": "67890"
         }
     headers:
       - name: Content-Type
@@ -1104,15 +1104,163 @@ collection:
         send: true
         store: true
       rebuildPath: true
-  - url: ""
-    name: New Request
+  - url: http://127.0.0.1:5000/api/admin/clients/1/phones
+    name: Client-get phone numbers
     meta:
       id: req_29269b9e364549a3b5566802f9eb4b69
       created: 1771737492450
-      modified: 1771737492450
+      modified: 1771842531115
       isPrivate: false
       description: ""
       sortKey: -1771737492450
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/clients/phones/1
+    name: Client-delete specific phone number (using its ID)
+    meta:
+      id: req_14839d2b8804425bb73eaf39170da529
+      created: 1771842536066
+      modified: 1771842614456
+      isPrivate: false
+      description: ""
+      sortKey: -1771842536066
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/clients/1/addresses
+    name: Client-add address
+    meta:
+      id: req_6c630830affc4460a35293eb6b779b43
+      created: 1771842617158
+      modified: 1771842858397
+      isPrivate: false
+      description: ""
+      sortKey: -1771842617158
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"city_id" : 1,
+        	"district_id" : 1,
+        	"address_line" : "Mir 7"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/clients/1/addresses
+    name: Client-get addresses
+    meta:
+      id: req_d887bd37576a4d29bb2b22dd94b3fe59
+      created: 1771842819823
+      modified: 1771842888654
+      isPrivate: false
+      description: ""
+      sortKey: -1771842819823
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/clients/addresses/1
+    name: Client-delete specific address (using its ID)
+    meta:
+      id: req_68894e27fe23413d81175fb94cd0f24e
+      created: 1771842998945
+      modified: 1771843046216
+      isPrivate: false
+      description: ""
+      sortKey: -1771842998945
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://127.0.0.1:5000/api/admin/districts/stats
+    name: Districts-get all information
+    meta:
+      id: req_0c37959e028f4e5d8b6dc4f43bc8210d
+      created: 1771843051318
+      modified: 1771844777259
+      isPrivate: false
+      description: ""
+      sortKey: -1771843051318
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.3.1
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: ""
+    name: New Request
+    meta:
+      id: req_b04cef3cb786434192ccca441bfce1a6
+      created: 1771844882479
+      modified: 1771844882479
+      isPrivate: false
+      description: ""
+      sortKey: -1771844882479
     method: GET
     headers:
       - name: User-Agent
@@ -1132,11 +1280,11 @@ cookieJar:
   meta:
     id: jar_31d43ac8123beca7966ffd56ff9881a1c35513cf
     created: 1771477887846
-    modified: 1771737564369
+    modified: 1771844878832
   cookies:
-    - id: b7fc6df0-03e6-4085-b282-89a33c17af5e
+    - id: b6e78e62-92ff-47fe-ad4a-ea35041221ce
       key: session
-      value: eyJfcGVybWFuZW50Ijp0cnVlLCJyb2xlIjoiY291cmllciIsInVzZXJfaWQiOjF9.aZqR3A.6Kf04eRhK2EWmsgb1BJ_1AnWZbU
+      value: eyJfcGVybWFuZW50Ijp0cnVlLCJyb2xlIjoiYWRtaW4iLCJ1c2VyX2lkIjoxfQ.aZw1Dg.0SZsu8-ihzWkDem0ySp0ZH5zL_g
       domain: 127.0.0.1
       path: /
       secure: false
