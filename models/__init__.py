@@ -7,3 +7,4 @@ from .price_type import PriceType
 from .courier import CourierProfile, courier_districts
 from .price_type import PriceType
 from .client import Client, ClientPhone, ClientAddress, ClientBlockReason
+from .service import Service, ServiceLogisticInfo, ServicePrice

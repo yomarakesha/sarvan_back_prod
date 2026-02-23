@@ -79,9 +79,6 @@ def add_phone(client_id):
     db.session.commit()
     return jsonify({"id": new_phone.id, "message": "Телефон добавлен"}), 201
 
-'''
-нижние я еще не проверял в инсомниа
-'''
 
 @admin_bp.route('/clients/<int:client_id>/phones', methods=['GET'])
 @admin_required
@@ -95,6 +92,7 @@ def get_client_phones(client_id):
     
     return jsonify(phones_list), 200
 
+
 @admin_bp.route('/clients/phones/<int:phone_id>', methods=['DELETE'])
 @admin_required
 def remove_phone(phone_id):
@@ -102,6 +100,7 @@ def remove_phone(phone_id):
     db.session.delete(phone)
     db.session.commit()
     return jsonify({"message": "Телефон удален"}), 200
+
 
 @admin_bp.route('/clients/<int:client_id>/addresses', methods=['POST'])
 @admin_required
@@ -117,6 +116,7 @@ def add_address(client_id):
     db.session.commit()
     return jsonify({"id": new_addr.id, "message": "Адрес добавлен"}), 201
 
+
 @admin_bp.route('/clients/addresses/<int:address_id>', methods=['DELETE'])
 @admin_required
 def remove_address(address_id):
@@ -124,6 +124,7 @@ def remove_address(address_id):
     db.session.delete(address)
     db.session.commit()
     return jsonify({"message": "Адрес удален"}), 200
+
 
 @admin_bp.route('/clients/<int:client_id>/addresses', methods=['GET'])
 @admin_required
@@ -142,34 +143,3 @@ def get_client_addresses(client_id):
     ]
     
     return jsonify(addresses_list), 200
-
-
-@admin_bp.route('/clients/full-list', methods=['GET'])
-@admin_required
-def get_clients_full_list():
-    clients = Client.query.all()
-    result = []
-    for client in clients:
-        result.append({
-            "id": client.id,
-            "full_name": client.full_name,
-            "is_active": client.is_active,
-            "price_type": {
-                "id": client.price_type.id,
-                "name": client.price_type.name
-            } if client.price_type else None,
-            "phones": [{"id": p.id, "phone": p.phone} for p in client.phones],
-            "addresses": [
-                {
-                    "id": a.id,
-                    "city": a.city.name if a.city else "Не указан",
-                    "district": a.district.name if a.district else "Не указан",
-                    "address_line": a.address_line
-                } for a in client.addresses
-            ]
-        })
-    return jsonify(result), 200
-
-
-
-
