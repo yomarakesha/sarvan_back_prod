@@ -15,6 +15,7 @@ class Service(db.Model):
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     logistic_info_id = db.Column(db.Integer, db.ForeignKey('service_logistic_info.id'), nullable=True)
     logistic_info = db.relationship('ServiceLogisticInfo')
+    prices = db.relationship('ServicePrice', backref='service', lazy='select')
 
 class ServicePrice(db.Model):
     __tablename__ = 'service_prices'
@@ -23,5 +24,5 @@ class ServicePrice(db.Model):
     city_id = db.Column(db.Integer, db.ForeignKey('cities.id'), nullable=False)
     price_type_id = db.Column(db.Integer, db.ForeignKey('price_types.id'), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
-
-    service = db.relationship('Service', backref=db.backref('prices', lazy='dynamic'))
+    city = db.relationship('City')
+    price_type = db.relationship('PriceType')
