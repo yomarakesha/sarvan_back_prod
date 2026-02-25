@@ -5,6 +5,7 @@ from api.admin import admin_bp
 from api.auth.routes import auth_bp
 from flask_cors import CORS
 
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
