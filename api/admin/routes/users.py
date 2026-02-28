@@ -1,6 +1,7 @@
 from flask import jsonify, request
 from extensions import db
 from models.user import User
+from models.location import Location
 from .. import admin_bp
 from utils.decorators import admin_required
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -39,6 +40,13 @@ def add_user():
     new_user.set_password(data['password'])
 
     db.session.add(new_user)
+    db.session.flush()
+
+    # if courier - create a Location for the courier
+    if new_user.role == 'courier':
+        loc = Location(name=new_user.full_name, type='courier', user_id=new_user.id)
+        db.session.add(loc)
+
     db.session.commit()
     return jsonify(new_user.to_dict()), 201
 
