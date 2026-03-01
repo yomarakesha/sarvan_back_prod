@@ -5,4 +5,4 @@ from .routes import couriers
 from .routes import clients
 from .routes import services
 from .routes import product_types, brands, products, product_states, warehouses
-from .routes import counterparties, locations, stocks, transactions
+from .routes import counterparties

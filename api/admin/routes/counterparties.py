@@ -22,7 +22,6 @@ def handle_counterparties():
         db.session.add(c)
         db.session.flush()
 
-        # create Location for this counterparty
         loc = Location(name=c.name, type='counterparty', counterparty_id=c.id)
         db.session.add(loc)
 

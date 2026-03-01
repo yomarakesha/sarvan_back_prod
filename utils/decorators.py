@@ -2,9 +2,6 @@ from functools import wraps
 from flask import session, jsonify
 
 def roles_required(*allowed_roles):
-    """
-    Использование: @roles_required('admin', 'director')
-    """
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -25,7 +22,4 @@ def roles_required(*allowed_roles):
     return decorator
 
 def admin_required(f):
-    """
-    Быстрый декоратор только для админов
-    """
     return roles_required('admin')(f)

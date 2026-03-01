@@ -22,7 +22,6 @@ def handle_warehouses():
         db.session.add(w)
         db.session.flush()
 
-        # create a Location for this warehouse
         loc = Location(name=w.name, type='warehouse', warehouse_id=w.id)
         db.session.add(loc)
 
@@ -45,7 +44,6 @@ def update_warehouse(w_id):
     data = request.get_json()
     w.name = data.get('name', w.name)
 
-    # replace addresses and phones if provided
     if 'addresses' in data:
         w.addresses[:] = []
         for a in data.get('addresses', []):

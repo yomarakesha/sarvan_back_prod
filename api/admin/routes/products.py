@@ -18,7 +18,6 @@ def handle_products():
         if not name or not product_type_id or not brand_id:
             return jsonify({"error": "name, product_type_id и brand_id обязательны"}), 400
 
-        # validate foreign keys
         ProductType.query.get_or_404(product_type_id)
         Brand.query.get_or_404(brand_id)
 
