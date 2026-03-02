@@ -11,7 +11,7 @@ from utils.transaction_types import TransactionTypes
 from .. import warehouse_bp
 from utils.decorators import roles_required
 
-# Получение остатков на складе с возможностью фильтрации по типу локации
+# Получение остатков на складе
 @warehouse_bp.route('/stocks', methods=['GET'])
 @roles_required('warehouse')
 def get_warehouse_stocks():
@@ -37,7 +37,6 @@ def get_warehouse_stocks():
         ProductState, Stock.product_state_id == ProductState.id
     )
     
-    # Фильтруем по типу локации, если параметр передан
     if location_type:
         query = query.filter(Location.type == location_type)
     

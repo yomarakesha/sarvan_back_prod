@@ -5,7 +5,7 @@ class Transaction(db.Model):
     __tablename__ = 'transactions'
     id = db.Column(db.Integer, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    operation_type = db.Column(db.String(50), nullable=False)  # 'incoming','move','writeoff'
+    operation_type = db.Column(db.String(50), nullable=False)
     from_location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=True)
     to_location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)

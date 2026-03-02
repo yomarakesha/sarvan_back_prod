@@ -3,8 +3,79 @@ from extensions import db
 from models.client import Client, ClientPhone, ClientAddress
 from models.client import ClientBlockReason
 from models.price_type import PriceType
+from models.city import City
+from models.district import District
 from .. import admin_bp
 from utils.decorators import admin_required
+
+
+@admin_bp.route('/clients', methods=['GET'])
+@admin_required
+def get_all_clients():
+    
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    
+    is_active = request.args.get('is_active', type=str)
+    price_type_id = request.args.get('price_type_id', type=int)
+    city_id = request.args.get('city_id', type=int)
+    district_id = request.args.get('district_id', type=int)
+    
+    query = Client.query
+    
+    if is_active is not None:
+        query = query.filter(Client.is_active == (is_active.lower() == 'true'))
+    
+    if price_type_id is not None:
+        query = query.filter(Client.price_type_id == price_type_id)
+    
+    if city_id is not None or district_id is not None:
+        query = query.join(ClientAddress, Client.id == ClientAddress.client_id)
+        if city_id is not None:
+            query = query.filter(ClientAddress.city_id == city_id)
+        if district_id is not None:
+            query = query.filter(ClientAddress.district_id == district_id)
+
+        query = query.distinct()
+    
+    paginated = query.paginate(page=page, per_page=per_page, error_out=False)
+    
+    clients_data = []
+    for client in paginated.items:
+        phones = [{"id": p.id, "phone": p.phone} for p in client.phones]
+        addresses = [
+            {
+                "id": a.id,
+                "city_id": a.city_id,
+                "city_name": a.city.name if a.city else None,
+                "district_id": a.district_id,
+                "district_name": a.district.name if a.district else None,
+                "address_line": a.address_line
+            }
+            for a in client.addresses
+        ]
+        
+        client_dict = {
+            "id": client.id,
+            "full_name": client.full_name,
+            "is_active": client.is_active,
+            "price_type_id": client.price_type_id,
+            "price_type_name": client.price_type.name if client.price_type else None,
+            "phones": phones,
+            "addresses": addresses
+        }
+        clients_data.append(client_dict)
+    
+    return jsonify({
+        "data": clients_data,
+        "pagination": {
+            "page": page,
+            "per_page": per_page,
+            "total": paginated.total,
+            "pages": paginated.pages
+        }
+    }), 200
+
 
 @admin_bp.route('/clients', methods=['POST'])
 @admin_required
@@ -53,6 +124,23 @@ def toggle_client_active(client_id):
         "message": "Статус успешно обновлен", 
         "is_active": client.is_active
     }), 200
+
+
+@admin_bp.route('/clients/<int:client_id>/block-reasons', methods=['GET'])
+@admin_required
+def get_client_block_reasons(client_id):
+    client = Client.query.get_or_404(client_id)
+    
+    reasons_list = [
+        {
+            "id": reason.id,
+            "reason": reason.reason,
+            "created_at": reason.created_at.isoformat() if reason.created_at else None
+        }
+        for reason in client.block_reasons
+    ]
+    
+    return jsonify(reasons_list), 200
 
 
 @admin_bp.route('/clients/<int:client_id>', methods=['PATCH'])
