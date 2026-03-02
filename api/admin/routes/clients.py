@@ -93,6 +93,37 @@ def create_client():
     return jsonify({"message": "Клиент создан", "id": new_client.id}), 201
 
 
+@admin_bp.route('/clients/<int:client_id>', methods=['GET'])
+@admin_required
+def get_client(client_id):
+    client = Client.query.get_or_404(client_id)
+    
+    phones = [{"id": p.id, "phone": p.phone} for p in client.phones]
+    addresses = [
+        {
+            "id": a.id,
+            "city_id": a.city_id,
+            "city_name": a.city.name if a.city else None,
+            "district_id": a.district_id,
+            "district_name": a.district.name if a.district else None,
+            "address_line": a.address_line
+        }
+        for a in client.addresses
+    ]
+    
+    client_data = {
+        "id": client.id,
+        "full_name": client.full_name,
+        "is_active": client.is_active,
+        "price_type_id": client.price_type_id,
+        "price_type_name": client.price_type.name if client.price_type else None,
+        "phones": phones,
+        "addresses": addresses
+    }
+    
+    return jsonify(client_data), 200
+
+
 @admin_bp.route('/clients/<int:client_id>/toggle-active', methods=['POST'])
 @admin_required
 def toggle_client_active(client_id):
