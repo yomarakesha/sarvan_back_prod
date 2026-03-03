@@ -2,9 +2,6 @@ from flask import request, jsonify
 from extensions import db
 from models.client import Client, ClientPhone, ClientAddress
 from models.client import ClientBlockReason
-from models.price_type import PriceType
-from models.city import City
-from models.district import District
 from .. import admin_bp
 from utils.decorators import roles_required
 
@@ -262,3 +259,4 @@ def get_client_addresses(client_id):
     ]
     
     return jsonify(addresses_list), 200
+

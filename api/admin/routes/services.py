@@ -1,33 +1,43 @@
 from flask import Blueprint, request, jsonify
 from extensions import db
-from models.service import Service, ServiceLogisticInfo, ServicePrice
+from models.service import Service, ServiceRule, ServicePrice
 from models.city import City
 from models.price_type import PriceType
-from utils.decorators import admin_required
+from models.product import Product
+from utils.decorators import admin_required, roles_required
+from utils.service_types import ServiceTypes
 from .. import admin_bp
 from sqlalchemy.orm import joinedload, selectinload
+
+
+@admin_bp.route('/service-types', methods=['GET'])
+@roles_required('admin','operator','courier','warehouse')
+def get_service_types():
+    service_types_list = [
+        {
+            "code": ServiceTypes.INCOMING,
+            "labels": ServiceTypes.LABELS[ServiceTypes.INCOMING]
+        },
+        {
+            "code": ServiceTypes.OUTCOMING,
+            "labels": ServiceTypes.LABELS[ServiceTypes.OUTCOMING]
+        },
+        {
+            "code": ServiceTypes.TRANSFORMATION,
+            "labels": ServiceTypes.LABELS[ServiceTypes.TRANSFORMATION]
+        }
+    ]
+    
+    return jsonify(service_types_list), 200
 
 
 @admin_bp.route('/services', methods=['POST'])
 @admin_required
 def add_service():
     data = request.get_json()
-    logistic_id = None
-    log_data = data.get('logistic_info')
-    if log_data:
-        new_log = ServiceLogisticInfo(
-            bottle_out=log_data.get('bottle_out'),
-            bottle_in=log_data.get('bottle_in'),
-            water_out=log_data.get('water_out', False),
-            water_in=log_data.get('water_in', False)
-        )
-        db.session.add(new_log)
-        db.session.flush()
-        logistic_id = new_log.id
     new_service = Service(
         name=data.get('name'),
-        is_active=data.get('is_active', True),
-        logistic_info_id=logistic_id
+        is_active=data.get('is_active', True)
     )
     db.session.add(new_service)
     db.session.commit()
@@ -96,7 +106,7 @@ def get_services():
     is_active_str = request.args.get('is_active') 
 
     query = Service.query.options(
-        joinedload(Service.logistic_info),
+        selectinload(Service.rules).joinedload(ServiceRule.product),
         selectinload(Service.prices).joinedload(ServicePrice.city),
         selectinload(Service.prices).joinedload(ServicePrice.price_type)
     )
@@ -126,21 +136,22 @@ def get_services():
                 "price_type_name": p.price_type.name if p.price_type else "N/A",
                 "price": float(p.price)
             })
-            
-        logistics = None
-        if service.logistic_info:
-            logistics = {
-                "bottle_out": service.logistic_info.bottle_out,
-                "bottle_in": service.logistic_info.bottle_in,
-                "water_out": service.logistic_info.water_out,
-                "water_in": service.logistic_info.water_in
-            }
+        
+        rules_data = []
+        for rule in service.rules:
+            rules_data.append({
+                "id": rule.id,
+                "product_id": rule.product_id,
+                "product_name": rule.product.name if rule.product else "N/A",
+                "service_type": rule.service_type,
+                "quantity": float(rule.quantity)
+            })
 
         result.append({
             "id": service.id,
             "name": service.name,
             "is_active": service.is_active,
-            "logistic_info": logistics,
+            "rules": rules_data,
             "prices": prices_data
         })
 
@@ -153,19 +164,42 @@ def update_service(service_id):
     service = Service.query.get_or_404(service_id)
     data = request.get_json()
     service.name = data.get('name', service.name)
-    log_data = data.get('logistic_info')
-    if log_data:
-        if service.logistic_info:
-            service.logistic_info.bottle_out = log_data.get('bottle_out', service.logistic_info.bottle_out)
-            service.logistic_info.bottle_in = log_data.get('bottle_in', service.logistic_info.bottle_in)
-            service.logistic_info.water_out = log_data.get('water_out', service.logistic_info.water_out)
-            service.logistic_info.water_in = log_data.get('water_in', service.logistic_info.water_in)
-        else:
-            new_log = ServiceLogisticInfo(**log_data)
-            db.session.add(new_log)
-            db.session.flush()
-            service.logistic_info_id = new_log.id
+    service.is_active = data.get('is_active', service.is_active)
     db.session.commit()
     return jsonify({"message": "Услуга обновлена"}), 200
+
+
+@admin_bp.route('/services/<int:service_id>/rules', methods=['POST'])
+@admin_required
+def add_service_rule(service_id):
+    service = Service.query.get_or_404(service_id)
+    data = request.get_json()
+    
+    product = Product.query.get_or_404(data.get('product_id'))
+    
+    new_rule = ServiceRule(
+        service_id=service_id,
+        product_id=data.get('product_id'),
+        service_type=data.get('service_type'),
+        quantity=data.get('quantity')
+    )
+    db.session.add(new_rule)
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Правило добавлено",
+        "id": new_rule.id
+    }), 201
+
+
+@admin_bp.route('/services/rules/<int:rule_id>', methods=['DELETE'])
+@admin_required
+def delete_service_rule(rule_id):
+    rule = ServiceRule.query.get_or_404(rule_id)
+    db.session.delete(rule)
+    db.session.commit()
+    return jsonify({"message": "Правило удалено"}), 200
+
+
 
 
