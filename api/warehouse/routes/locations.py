@@ -4,7 +4,7 @@ from .. import warehouse_bp
 from utils.decorators import roles_required
 
 @warehouse_bp.route('/locations/counterparties', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def get_counterparty_locations():
 
     locs = Location.query.filter_by(type='counterparty').all()
@@ -12,7 +12,7 @@ def get_counterparty_locations():
     return jsonify(result), 200
 
 @warehouse_bp.route('/locations/warehouses', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def get_warehouse_locations():
     
     locs = Location.query.filter_by(type='warehouse').all()
@@ -20,7 +20,7 @@ def get_warehouse_locations():
     return jsonify(result), 200
 
 @warehouse_bp.route('/locations/couriers', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def get_courier_locations():
     
     locs = Location.query.filter_by(type='courier').all()

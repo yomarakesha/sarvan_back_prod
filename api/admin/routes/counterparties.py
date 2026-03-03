@@ -3,11 +3,11 @@ from extensions import db
 from models.counterparty import Counterparty, CounterpartyAddress, CounterpartyPhone
 from models.location import Location
 from .. import admin_bp
-from utils.decorators import admin_required
+from utils.decorators import roles_required
 
 
 @admin_bp.route('/counterparties', methods=['GET', 'POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def handle_counterparties():
     if request.method == 'POST':
         data = request.get_json()
@@ -38,7 +38,7 @@ def handle_counterparties():
 
 
 @admin_bp.route('/counterparties/<int:c_id>', methods=['PUT'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def update_counterparty(c_id):
     c = Counterparty.query.get_or_404(c_id)
     data = request.get_json()
@@ -59,7 +59,7 @@ def update_counterparty(c_id):
 
 
 @admin_bp.route('/counterparties/<int:c_id>/block', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def block_counterparty(c_id):
     c = Counterparty.query.get_or_404(c_id)
     c.is_active = False
@@ -68,7 +68,7 @@ def block_counterparty(c_id):
 
 
 @admin_bp.route('/counterparties/<int:c_id>/unblock', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def unblock_counterparty(c_id):
     c = Counterparty.query.get_or_404(c_id)
     c.is_active = True

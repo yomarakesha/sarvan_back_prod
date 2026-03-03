@@ -3,11 +3,11 @@ from extensions import db
 from models.warehouse import Warehouse, WarehouseAddress, WarehousePhone
 from models.location import Location
 from .. import admin_bp
-from utils.decorators import admin_required
+from utils.decorators import roles_required
 
 
 @admin_bp.route('/warehouses', methods=['GET', 'POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def handle_warehouses():
     if request.method == 'POST':
         data = request.get_json()
@@ -38,7 +38,7 @@ def handle_warehouses():
 
 
 @admin_bp.route('/warehouses/<int:w_id>', methods=['PUT'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def update_warehouse(w_id):
     w = Warehouse.query.get_or_404(w_id)
     data = request.get_json()
@@ -58,7 +58,7 @@ def update_warehouse(w_id):
 
 
 @admin_bp.route('/warehouses/<int:w_id>/block', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def block_warehouse(w_id):
     w = Warehouse.query.get_or_404(w_id)
     w.is_active = False
@@ -67,7 +67,7 @@ def block_warehouse(w_id):
 
 
 @admin_bp.route('/warehouses/<int:w_id>/unblock', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def unblock_warehouse(w_id):
     w = Warehouse.query.get_or_404(w_id)
     w.is_active = True

@@ -2,11 +2,11 @@ from flask import jsonify, request
 from extensions import db
 from models.product_type import ProductType
 from .. import admin_bp
-from utils.decorators import admin_required
+from utils.decorators import roles_required
 
 
 @admin_bp.route('/product-types', methods=['GET', 'POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def handle_product_types():
     if request.method == 'POST':
         data = request.get_json()
@@ -24,7 +24,7 @@ def handle_product_types():
 
 
 @admin_bp.route('/product-types/<int:pt_id>', methods=['PUT'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def update_product_type(pt_id):
     pt = ProductType.query.get_or_404(pt_id)
     data = request.get_json()
@@ -34,7 +34,7 @@ def update_product_type(pt_id):
 
 
 @admin_bp.route('/product-types/<int:pt_id>/block', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def block_product_type(pt_id):
     pt = ProductType.query.get_or_404(pt_id)
     pt.is_active = False
@@ -43,7 +43,7 @@ def block_product_type(pt_id):
 
 
 @admin_bp.route('/product-types/<int:pt_id>/unblock', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def unblock_product_type(pt_id):
     pt = ProductType.query.get_or_404(pt_id)
     pt.is_active = True

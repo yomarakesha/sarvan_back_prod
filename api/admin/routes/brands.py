@@ -2,11 +2,11 @@ from flask import jsonify, request
 from extensions import db
 from models.brand import Brand
 from .. import admin_bp
-from utils.decorators import admin_required
+from utils.decorators import roles_required
 
 
 @admin_bp.route('/brands', methods=['GET', 'POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def handle_brands():
     if request.method == 'POST':
         data = request.get_json()
@@ -24,7 +24,7 @@ def handle_brands():
 
 
 @admin_bp.route('/brands/<int:b_id>', methods=['PUT'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def update_brand(b_id):
     b = Brand.query.get_or_404(b_id)
     data = request.get_json()
@@ -34,7 +34,7 @@ def update_brand(b_id):
 
 
 @admin_bp.route('/brands/<int:b_id>/block', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def block_brand(b_id):
     b = Brand.query.get_or_404(b_id)
     b.is_active = False
@@ -43,7 +43,7 @@ def block_brand(b_id):
 
 
 @admin_bp.route('/brands/<int:b_id>/unblock', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def unblock_brand(b_id):
     b = Brand.query.get_or_404(b_id)
     b.is_active = True

@@ -13,7 +13,7 @@ from utils.decorators import roles_required
 
 # Получение остатков на складе
 @warehouse_bp.route('/stocks', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def get_warehouse_stocks():
     
     location_type = request.args.get('location_type', type=str, default=None)
@@ -58,7 +58,7 @@ def get_warehouse_stocks():
 
 #Приемка с завода на склад
 @warehouse_bp.route('/stocks/receive_from_counterparty', methods=['POST'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def receive_stock_from_counterparty():
     
     data = request.get_json() or {}

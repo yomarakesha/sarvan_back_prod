@@ -6,11 +6,11 @@ from models.price_type import PriceType
 from models.city import City
 from models.district import District
 from .. import admin_bp
-from utils.decorators import admin_required
+from utils.decorators import roles_required
 
 
 @admin_bp.route('/clients', methods=['GET'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def get_all_clients():
     
     page = request.args.get('page', 1, type=int)
@@ -78,7 +78,7 @@ def get_all_clients():
 
 
 @admin_bp.route('/clients', methods=['POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def create_client():
     data = request.get_json()
     if not data.get('price_type_id'):
@@ -94,7 +94,7 @@ def create_client():
 
 
 @admin_bp.route('/clients/<int:client_id>', methods=['GET'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def get_client(client_id):
     client = Client.query.get_or_404(client_id)
     
@@ -125,7 +125,7 @@ def get_client(client_id):
 
 
 @admin_bp.route('/clients/<int:client_id>/toggle-active', methods=['POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def toggle_client_active(client_id):
     client = Client.query.get_or_404(client_id)
     data = request.get_json() or {}
@@ -158,7 +158,7 @@ def toggle_client_active(client_id):
 
 
 @admin_bp.route('/clients/<int:client_id>/block-reasons', methods=['GET'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def get_client_block_reasons(client_id):
     client = Client.query.get_or_404(client_id)
     
@@ -175,7 +175,7 @@ def get_client_block_reasons(client_id):
 
 
 @admin_bp.route('/clients/<int:client_id>', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def update_client(client_id):
     client = Client.query.get_or_404(client_id)
     data = request.get_json()
@@ -190,7 +190,7 @@ def update_client(client_id):
 
 
 @admin_bp.route('/clients/<int:client_id>/phones', methods=['POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def add_phone(client_id):
     data = request.get_json()
     new_phone = ClientPhone(client_id=client_id, phone=data.get('phone'))
@@ -200,7 +200,7 @@ def add_phone(client_id):
 
 
 @admin_bp.route('/clients/<int:client_id>/phones', methods=['GET'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def get_client_phones(client_id):
     client = Client.query.get_or_404(client_id)
     
@@ -213,7 +213,7 @@ def get_client_phones(client_id):
 
 
 @admin_bp.route('/clients/phones/<int:phone_id>', methods=['DELETE'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def remove_phone(phone_id):
     phone = ClientPhone.query.get_or_404(phone_id)
     db.session.delete(phone)
@@ -222,7 +222,7 @@ def remove_phone(phone_id):
 
 
 @admin_bp.route('/clients/<int:client_id>/addresses', methods=['POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def add_address(client_id):
     data = request.get_json()
     new_addr = ClientAddress(
@@ -237,7 +237,7 @@ def add_address(client_id):
 
 
 @admin_bp.route('/clients/addresses/<int:address_id>', methods=['DELETE'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def remove_address(address_id):
     address = ClientAddress.query.get_or_404(address_id)
     db.session.delete(address)
@@ -246,7 +246,7 @@ def remove_address(address_id):
 
 
 @admin_bp.route('/clients/<int:client_id>/addresses', methods=['GET'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def get_client_addresses(client_id):
     client = Client.query.get_or_404(client_id)
     

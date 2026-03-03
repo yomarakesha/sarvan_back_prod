@@ -12,7 +12,7 @@ from utils.decorators import roles_required
 
 
 @warehouse_bp.route('/transaction-types', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def get_transaction_types():
     types = {}
     for attr_name in dir(TransactionTypes):
@@ -28,7 +28,7 @@ def get_transaction_types():
 
 #Показывает транзакции по приемке с завода на склад
 @warehouse_bp.route('/transactions_from_counterparties', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def list_incoming_transactions_from_counterparties():
     
     query = Transaction.query.filter_by(operation_type=TransactionTypes.INVENTORY_IN)
@@ -86,7 +86,7 @@ def list_incoming_transactions_from_counterparties():
 
 #Создать транзакцию (перемещение товара между локациями).
 @warehouse_bp.route('/transaction', methods=['POST'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def create_transaction():
     
     data = request.get_json() or {}
@@ -161,7 +161,7 @@ def create_transaction():
 
 #Удалить транзакцию (отмена перемещения товара между локациями).
 @warehouse_bp.route('/transaction/<int:transaction_id>', methods=['DELETE'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def delete_transaction(transaction_id):
     
     transaction = Transaction.query.get(transaction_id)
@@ -204,7 +204,7 @@ def delete_transaction(transaction_id):
 
 #Показать все транзакции (перемещение товара между локациями) с фильтром по дате и по пользователю (курьеру или складчику) и по типу операции.
 @warehouse_bp.route('/transactions', methods=['GET'])
-@roles_required('warehouse')
+@roles_required('admin','operator','courier','warehouse')
 def list_transactions():
     
     query = Transaction.query

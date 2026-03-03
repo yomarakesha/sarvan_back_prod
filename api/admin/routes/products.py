@@ -4,11 +4,11 @@ from models.product import Product
 from models.product_type import ProductType
 from models.brand import Brand
 from .. import admin_bp
-from utils.decorators import admin_required
+from utils.decorators import roles_required
 
 
 @admin_bp.route('/products', methods=['GET', 'POST'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def handle_products():
     if request.method == 'POST':
         data = request.get_json()
@@ -37,7 +37,7 @@ def handle_products():
 
 
 @admin_bp.route('/products/<int:p_id>', methods=['PUT'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def update_product(p_id):
     p = Product.query.get_or_404(p_id)
     data = request.get_json()
@@ -56,7 +56,7 @@ def update_product(p_id):
 
 
 @admin_bp.route('/products/<int:p_id>/block', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def block_product(p_id):
     p = Product.query.get_or_404(p_id)
     p.is_active = False
@@ -65,7 +65,7 @@ def block_product(p_id):
 
 
 @admin_bp.route('/products/<int:p_id>/unblock', methods=['PATCH'])
-@admin_required
+@roles_required('admin','operator','courier','warehouse')
 def unblock_product(p_id):
     p = Product.query.get_or_404(p_id)
     p.is_active = True
