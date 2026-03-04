@@ -7,6 +7,7 @@ from api.warehouse import warehouse_bp
 from api.courier import courier_bp
 from api.operator import operator_bp
 from flask_cors import CORS
+import os
 
 
 def create_app():
@@ -29,4 +30,5 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))    
+    app.run(host='0.0.0.0', port=port, debug=False)
