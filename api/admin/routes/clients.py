@@ -5,7 +5,9 @@ from models.client import ClientBlockReason
 from models.location import Location
 from .. import admin_bp
 from utils.decorators import roles_required
-
+from models.credit import ClientCredit
+from models.stock import Stock
+from sqlalchemy import func
 
 @admin_bp.route('/clients', methods=['GET'])
 @roles_required('admin','operator','courier','warehouse')
@@ -57,6 +59,7 @@ def get_all_clients():
             "id": client.id,
             "full_name": client.full_name,
             "is_active": client.is_active,
+            "created_at": client.created_at.isoformat() if client.created_at else None,
             "price_type_id": client.price_type_id,
             "price_type_name": client.price_type.name if client.price_type else None,
             "phones": phones,
@@ -120,14 +123,35 @@ def get_client(client_id):
         for a in client.addresses
     ]
     
+    # Получаем кредитную информацию
+    credit_info = None
+    client_credit = ClientCredit.query.filter_by(client_id=client.id).first()
+    if client_credit:
+        credit_info = {
+            "credit_limit": float(client_credit.credit_limit),
+            "used_credit": float(client_credit.used_credit),
+            "available_credit": float(client_credit.available_credit)
+        }
+        
+    # Считаем количество товаров в локации клиента
+    total_items = 0
+    if client.location_id:
+        total = db.session.query(func.sum(Stock.quantity)).filter_by(location_id=client.location_id).scalar()
+        if total is not None:
+            total_items = float(total)
+    
     client_data = {
         "id": client.id,
         "full_name": client.full_name,
         "is_active": client.is_active,
+        "created_at": client.created_at.isoformat() if client.created_at else None,
         "price_type_id": client.price_type_id,
         "price_type_name": client.price_type.name if client.price_type else None,
+        "location_id": client.location_id,
         "phones": phones,
-        "addresses": addresses
+        "addresses": addresses,
+        "credit": credit_info,
+        "total_items_in_location": total_items
     }
     
     return jsonify(client_data), 200

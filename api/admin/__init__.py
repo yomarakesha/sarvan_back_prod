@@ -9,3 +9,4 @@ from .routes import counterparties
 from ..operator.routes import orders
 from ..operator.routes import order_dictionaries
 from .routes import credits
+from .routes import discounts

@@ -32,6 +32,7 @@ class Client(db.Model):
     price_type_id = db.Column(db.Integer, db.ForeignKey('price_types.id'), nullable=False)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
     price_type = db.relationship('PriceType')
     location = db.relationship('Location', backref='clients')

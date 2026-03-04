@@ -19,3 +19,4 @@ from .stock import Stock
 from .transaction import Transaction
 from .order import Order, OrderItem
 from .credit import ClientCredit, CreditPayment
+from .discount import Discount, discount_services, discount_cities

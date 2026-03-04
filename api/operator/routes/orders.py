@@ -211,6 +211,27 @@ def create_order():
                 total_price=total_price
             )
             order.items.append(order_item)
+            
+        # --- Подключение системы скидок ---
+        # Вычисляем общую сумму заказа для проверки скидок
+        total_order_price = sum((item.total_price for item in order.items if item.total_price), Decimal('0.0'))
+        
+        if total_order_price > 0:
+            from utils.discount_logic import calculate_applicable_discount, apply_discount_to_order
+            
+            service_ids = [item.service_id for item in order.items]
+            city_id = client_address.city_id
+            
+            best_discount, discount_amount = calculate_applicable_discount(
+                client_id=order.client_id, 
+                city_id=city_id, 
+                service_ids=service_ids, 
+                total_price=total_order_price
+            )
+            
+            if best_discount and discount_amount > 0:
+                apply_discount_to_order(order, best_discount.id, discount_amount)
+        # ------------------------------------
         
         db.session.add(order)
         db.session.commit()

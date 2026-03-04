@@ -24,6 +24,10 @@ class Order(db.Model):
     # Оплата
     payment_type = db.Column(db.String(50), nullable=False)  # Тип оплаты: 'cash', 'card', 'cash_and_card', 'credit', 'free'
     
+    # Скидки
+    applied_discount_id = db.Column(db.Integer, db.ForeignKey('discounts.id'), nullable=True)
+    discount_amount = db.Column(db.Numeric(10, 2), nullable=True)  # Сумма скидки
+    
     # Статус
     status = db.Column(db.String(50), default='pending', nullable=False)
     
@@ -52,6 +56,8 @@ class Order(db.Model):
             'delivery_time_type': self.delivery_time_type,
             'delivery_time': self.delivery_time.isoformat() if self.delivery_time else None,
             'payment_type': self.payment_type,
+            'applied_discount_id': self.applied_discount_id,
+            'discount_amount': float(self.discount_amount) if self.discount_amount else None,
             'status': self.status,
             'created_at': self.created_at.isoformat(),
             'updated_at': self.updated_at.isoformat(),
