@@ -6,3 +6,6 @@ from .routes import clients
 from .routes import services
 from .routes import product_types, brands, products, product_states, warehouses
 from .routes import counterparties
+from ..operator.routes import orders
+from ..operator.routes import order_dictionaries
+from .routes import credits

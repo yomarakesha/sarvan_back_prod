@@ -2,6 +2,7 @@ from flask import request, jsonify
 from extensions import db
 from models.client import Client, ClientPhone, ClientAddress
 from models.client import ClientBlockReason
+from models.location import Location
 from .. import admin_bp
 from utils.decorators import roles_required
 
@@ -86,6 +87,17 @@ def create_client():
         price_type_id=data.get('price_type_id')
     )
     db.session.add(new_client)
+    db.session.flush()
+    
+    # Автоматическое создание Location для клиента
+    location = Location(
+        name=new_client.full_name,
+        type='client',
+        client_id=new_client.id
+    )
+    db.session.add(location)
+    new_client.location_id = location.id
+    
     db.session.commit()
     return jsonify({"message": "Клиент создан", "id": new_client.id}), 201
 

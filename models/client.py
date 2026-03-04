@@ -31,8 +31,10 @@ class Client(db.Model):
     full_name = db.Column(db.String(255), nullable=False)
     price_type_id = db.Column(db.Integer, db.ForeignKey('price_types.id'), nullable=False)
     is_active = db.Column(db.Boolean, default=True, nullable=False)
+    location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=True)
     
     price_type = db.relationship('PriceType')
+    location = db.relationship('Location', backref='clients')
     phones = db.relationship('ClientPhone', backref='client', cascade="all, delete-orphan")
     addresses = db.relationship('ClientAddress', backref='client', cascade="all, delete-orphan")
     block_reasons = db.relationship('ClientBlockReason', backref='client', cascade="all, delete-orphan")

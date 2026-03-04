@@ -17,3 +17,5 @@ from .counterparty import Counterparty, CounterpartyPhone, CounterpartyAddress
 from .location import Location
 from .stock import Stock
 from .transaction import Transaction
+from .order import Order, OrderItem
+from .credit import ClientCredit, CreditPayment
