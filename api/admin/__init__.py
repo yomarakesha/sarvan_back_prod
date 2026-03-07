@@ -4,6 +4,7 @@ from . import all_types
 from . import brands
 from . import cities
 from . import counterparties
+from . import courier_info
 from . import districts
 from . import price_types
 from . import product_states
