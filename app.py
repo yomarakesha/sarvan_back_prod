@@ -13,11 +13,12 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     Db.init(
-    host="localhost",
-    user="root",
-    password="19121987",
-    database="sarwan",
-    maxconnections=20
+        host=os.getenv("MYSQL_HOST", os.getenv("MYSQLHOST", "localhost")),
+        user=os.getenv("MYSQL_USER", os.getenv("MYSQLUSER", "root")),
+        password=os.getenv("MYSQL_PASSWORD", os.getenv("MYSQLPASSWORD", "19121987")),
+        database=os.getenv("MYSQL_DATABASE", os.getenv("MYSQLDATABASE", "sarwan")),
+        port=int(os.getenv("MYSQL_PORT", os.getenv("MYSQLPORT", 3306))),
+        maxconnections=20
     )
     CORS(app,supports_credentials=True)
 
