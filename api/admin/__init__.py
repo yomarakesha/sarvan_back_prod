@@ -7,6 +7,7 @@ from . import clients
 from . import counterparties
 from . import courier_info
 from . import credits
+from . import discounts
 from . import districts
 from . import price_types
 from . import product_states
