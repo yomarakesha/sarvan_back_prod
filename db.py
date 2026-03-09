@@ -5,11 +5,11 @@ class Db:
     _pool = None
 
     @classmethod
-    def init(cls, host, user, password, database, port=3306):
+    def init(cls, host, user, password, database, port=3306, maxconnections=5):
         """Инициализация пула соединений с явным указанием порта"""
         cls._pool = PooledDB(
             creator=pymysql,
-            maxconnections=5,
+            maxconnections=maxconnections,
             mincached=2,
             maxcached=5,
             blocking=True,
