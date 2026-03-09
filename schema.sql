@@ -271,8 +271,6 @@ CREATE TABLE transactions (
     FOREIGN KEY (product_state_id) REFERENCES product_states(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
--
--- Таблица скидок
 CREATE TABLE discounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,

@@ -2,13 +2,12 @@ from werkzeug.security import generate_password_hash
 from db import Db
 
 Db.init(
-    host="localhost",
+    host="nozomi.proxy.rlwy.net", 
     user="root",
-    password="19121987",
-    database="sarwan",
-    maxconnections=5
+    password="ryqdjLudThJbUlvGSPCcZgDtomaaFxlf", 
+    database="railway",
+    port=37663 # Теперь db.py увидит этот порт
 )
-
 
 def create_admin():
     full_name = input("Full name: ").strip()
