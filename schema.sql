@@ -271,7 +271,7 @@ CREATE TABLE transactions (
     FOREIGN KEY (product_state_id) REFERENCES product_states(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
--
+
 -- Таблица скидок
 CREATE TABLE discounts (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -334,9 +334,6 @@ CREATE TABLE orders (
     
     payment_type VARCHAR(50) NOT NULL,
     
-    applied_discount_id INT NULL,
-    discount_amount DECIMAL(10,2) NULL,
-    
     status VARCHAR(50) NOT NULL DEFAULT 'pending',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
@@ -344,8 +341,7 @@ CREATE TABLE orders (
     FOREIGN KEY (client_address_id) REFERENCES client_addresses(id) ON DELETE RESTRICT,
     FOREIGN KEY (client_phone_id) REFERENCES client_phones(id) ON DELETE RESTRICT,
     FOREIGN KEY (courier_id) REFERENCES courier_profiles(user_id) ON DELETE SET NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
-    FOREIGN KEY (applied_discount_id) REFERENCES discounts(id) ON DELETE SET NULL
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
 -- Таблица элементов заказа
@@ -360,6 +356,18 @@ CREATE TABLE order_items (
     
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
     FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE RESTRICT
+);
+
+-- Таблица скидок заказа
+CREATE TABLE order_discounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    discount_id INT NOT NULL,
+    discount_amount DECIMAL(10,2) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (discount_id) REFERENCES discounts(id) ON DELETE CASCADE
 );
 
 -- Таблица кредитного лимита клиента
